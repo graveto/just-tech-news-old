@@ -16,13 +16,16 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  User.findOne({
-    attributes: {exclude: ['password']}
-  },{
-    where: {
-      id: req.params.id
+  User.findOne(
+    {
+      attributes: { exclude: ["password"] }
+    },
+    {
+      where: {
+        id: req.params.id
+      }
     }
-  })
+  )
     .then((dbUserData) => {
       if (!dbUserData) {
         res.status(404).json({ message: "No user found with this id" });
@@ -51,6 +54,7 @@ router.post("/", (req, res) => {
 
 router.put("/:id", (req, res) => {
   User.update(req.body, {
+    individualHooks: true,
     id: req.params.id
   })
     .then((dbUserData) => {
